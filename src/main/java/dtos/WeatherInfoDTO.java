@@ -1,10 +1,19 @@
 package dtos;
 
-public class WeatherInfoDTO {
-    private double temperature;
-    private String skyText;
-    private double humidity;
-    private String windText;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+
+@Getter
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class WeatherInfoDTO {
+    @JsonProperty("LocationName")
+    private String locationName;
+    @JsonProperty("CurrentData")
+    private CurrentData currentData;
 
 }

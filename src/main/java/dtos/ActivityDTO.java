@@ -25,4 +25,6 @@ public class ActivityDTO {
     private CityInfoDTO cityInfoDTO;
 
 
+
+
 }
