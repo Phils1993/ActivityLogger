@@ -9,7 +9,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class ActivityDAO implements IDAO <ActivityDTO, Integer>{
+public class ActivityDAO implements IDAO <Activity, Integer>{
     private final EntityManagerFactory emf;
     public ActivityDAO(EntityManagerFactory emf) {
         this.emf = emf;
@@ -17,27 +17,56 @@ public class ActivityDAO implements IDAO <ActivityDTO, Integer>{
 
 
     @Override
-    public ActivityDTO create(ActivityDTO activityDTO) {
-        return null;
+    public Activity create(Activity activity) {
+        try(EntityManager em = emf.createEntityManager()){
+            em.getTransaction().begin();
+            em.persist(activity);
+            em.getTransaction().commit();
+            return activity;
+        } catch(ApiException e){
+            throw new RuntimeException( "Error creating new activity", e);
+        }
     }
 
     @Override
-    public boolean update(ActivityDTO activityDTO) {
-        return false;
+    public boolean update(Activity activity) {
+        try(EntityManager em = emf.createEntityManager()){
+            em.getTransaction().begin();
+            em.merge(activity);
+            em.getTransaction().commit();
+            return true;
+        }
     }
 
     @Override
-    public boolean delete(ActivityDTO activityDTO) {
-        return false;
+    public boolean delete(Activity activity) {
+        try(EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+
+            // Merge to attach it to the current session
+            Activity attached = em.merge(activity);
+            em.remove(attached);
+
+            em.getTransaction().commit();
+            return true;
+        }
     }
 
     @Override
-    public ActivityDTO find(Integer id) {
-        return null;
+    public Activity find(Integer id) {
+        try(EntityManager em = emf.createEntityManager()){
+            em.getTransaction().begin();
+            em.find(Activity.class, id);
+            em.getTransaction().commit();
+            return em.find(Activity.class, id);
+        }
     }
 
     @Override
-    public List<ActivityDTO> getAll() {
-        return List.of();
+    public List<Activity> getAll() {
+        try(EntityManager em = emf.createEntityManager()){
+            TypedQuery<Activity> query = em.createQuery("select a from Activity a", Activity.class);
+            return query.getResultList();
+        }
     }
 }

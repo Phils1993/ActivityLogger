@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,6 +16,7 @@ import java.util.Set;
 @Builder
 @ToString
 @Table(name = "city_info")
+@EqualsAndHashCode
 public class CityInfo {
 
     @Id
@@ -26,11 +28,15 @@ public class CityInfo {
     private double longitude;
     private double elevation;
     private String country;
-    private String admin1;
-    private String admin2;
+    private String timezone;
+    private long population;
+    private List<String> postcodes;
+
 
     // One city can have many activitie
     @OneToMany(mappedBy = "cityInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Activity> activities = new HashSet<>();
 
 

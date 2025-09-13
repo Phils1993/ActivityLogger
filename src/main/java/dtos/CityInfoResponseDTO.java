@@ -1,6 +1,8 @@
 package dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import entities.CityInfo;
 import lombok.*;
 
 import java.util.List;
@@ -18,5 +20,7 @@ import java.util.List;
 public class CityInfoResponseDTO {
 
     private List<CityInfoDTO> results;
-    private double generationtime_ms;
+
+    @JsonProperty("generationtime_ms")
+    private double generationTimeMs;
 }

@@ -3,8 +3,7 @@ package entities;
 
 import enums.ExerciseType;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDate;
@@ -14,6 +13,10 @@ import java.time.LocalTime;
 @Data
 @ToString
 @Table (name = "activity")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,21 +35,19 @@ public class Activity {
     private String comment;
 
     // many acticities can happen in one City
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "city_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private CityInfo cityInfo;
 
     // one activity has one weather snapshot
     @OneToOne (cascade = CascadeType.ALL)
-    @JoinColumn(name = "weather_id")
+    @JoinColumn(name = "id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private WeatherInfo weatherInfo;
 
 
-    @PrePersist
-    public void prePersist(){
-        this.executionDate = LocalDate.now();
-        this.timeOfDay = LocalTime.now();
-    }
     @PreUpdate
     public void preUpdate(){
         this.executionDate = LocalDate.now();

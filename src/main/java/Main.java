@@ -1,7 +1,8 @@
-import dtos.ActivityDTO;
-import dtos.CityInfoDTO;
-import dtos.WeatherInfoDTO;
+import config.HibernateConfig;
+import daos.ActivityDAO;
 import enums.ExerciseType;
+import jakarta.persistence.EntityManagerFactory;
+import populator.Populator;
 import services.ActivityServices;
 import services.CityServices;
 import services.WeatherServices;
@@ -9,35 +10,51 @@ import services.WeatherServices;
 public class Main {
     public static void main(String[] args) {
 
-        WeatherServices weatherService = new WeatherServices();
-        CityServices cityService = new CityServices();
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
-        // get city info
-        System.out.println("Get city info");
-        CityInfoDTO cityInfoDTO = cityService.getCityInfo("Lyngby");
-        System.out.println(cityInfoDTO);
+        // DAOs
+        ActivityDAO activityDAO = new ActivityDAO(emf);
+        CityServices cityServices = new CityServices();
+        WeatherServices weatherServices = new WeatherServices();
 
-        // get weather info (using city lat/lon)
-        if (cityInfoDTO != null) {
-            System.out.println("Get weather info");
-            WeatherInfoDTO weatherInfoDTO = weatherService.getWeatherInfo(
-                    cityInfoDTO.getLatitude(),
-                    cityInfoDTO.getLongitude()
-            );
-            System.out.println(weatherInfoDTO);
+        // Services
+        ActivityServices activityServices = new ActivityServices(activityDAO);
+
+        Populator populator = Populator.builder()
+                .activityServices(activityServices)
+                .cityServices(cityServices)
+                .weatherServices(weatherServices)
+                .build();
+
+// Create a single activity for København
+        try {
+            populator.createActivityForCity("København", ExerciseType.BIKE);
+            populator.createActivityForCity("Århus", ExerciseType.RUN);
+            populator.createActivityForCity("Odense", ExerciseType.BIKE);
+            populator.createActivityForCity("Roskilde",  ExerciseType.SWIM);
+            populator.createActivityForCity("Aalborg",  ExerciseType.SWIM);
+            populator.createActivityForCity("Esbjerg", ExerciseType.HIKE);
+            populator.createActivityForCity("Randers", ExerciseType.HIKE);
+            populator.createActivityForCity("Kolding", ExerciseType.BIKE);
+            populator.createActivityForCity("Horsens", ExerciseType.WALKING);
+            populator.createActivityForCity("Vejle", ExerciseType.RUN);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
-        // create a new activity
-        ActivityServices activityServices = new ActivityServices(weatherService, cityService);
-        System.out.println("Get activity info");
-        ActivityDTO morningRun = activityServices.createActivity(
-                ExerciseType.RUN,
-                "København",
-                22,
-                5,
-                "just a chill morning run"
-        );
-        System.out.println(morningRun);
+        populator.deleteActivity(5);
+
+        populator.updateActivityComment(4,"UPDATED");
+
+        populator.listAllActivities();
+
+        populator.updateActivityType(8, ExerciseType.BIKE);
+
+
+        emf.close();
+
+
     }
+
 }
 

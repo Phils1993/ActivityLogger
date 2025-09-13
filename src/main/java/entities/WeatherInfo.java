@@ -10,6 +10,7 @@ import lombok.*;
 @Data
 @ToString
 @Builder
+@EqualsAndHashCode
 
 public class WeatherInfo {
 
@@ -26,5 +27,7 @@ public class WeatherInfo {
 
     // reverse mapping if you want it (optional)
     @OneToOne(mappedBy = "weatherInfo")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Activity activity;
 }

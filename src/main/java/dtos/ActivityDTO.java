@@ -3,7 +3,6 @@ package dtos;
 import enums.ExerciseType;
 import lombok.*;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
