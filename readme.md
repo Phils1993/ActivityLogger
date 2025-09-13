@@ -1,39 +1,210 @@
-CityInfoResponseDTO → handles the wrapper around "results".
+# Activity Tracker Application
 
-CityInfoDTO → one city entry.
+A Java application to track physical activities along with city and weather information.
 
-WeatherInfoDTO → full weather response.
+---
 
-CurrentWeatherDTO → actual measured weather values.
+## Package Structure
 
-CurrentWeatherUnitsDTO → tells you the units for those values.
+```java
+package daos;       // Data Access Objects for CRUD
+package dtos;       // Data Transfer Objects
+package entities;   // Database Entities
+package enums;      // Enumerations
+package services;   // Business Logic / Service Layer
+```
+
+#Entities
+````java
+@Entity
+class Activity {
+int id;
+LocalDate executionDate;
+ExerciseType exerciseType;
+LocalTime timeOfDay;
+int duration;
+double distance;
+String comment;
+CityInfo cityInfo;        // Many-to-One
+WeatherInfo weatherInfo;  // One-to-One
+}
+`````
+``` java
+@Entity
+class CityInfo {
+    int id;
+    String name;
+    double latitude, longitude, elevation;
+    String country, timezone;
+    long population;
+    List<String> postcodes;
+    Set<Activity> activities; // One-to-Many
+}
+````
+`````java
+@Entity
+class WeatherInfo {
+    int id;
+    String time;
+    double temperature, windspeed;
+    int winddirection, isDay, weathercode;
+    Activity activity;         // One-to-One mapped
+}
+
+``````
+# DTO (data transfer object)
+````java
+class ActivityDTO {
+    LocalDate executionDate;
+    ExerciseType exerciseType;
+    LocalTime timeOfDay;
+    int duration;
+    double distance;
+    String comment;
+    CityInfoDTO cityInfoDTO;
+    WeatherInfoDTO weatherInfoDTO;
+}
+````
+`````java
+class CityInfoDTO {
+    int id;
+    String name;
+    double latitude, longitude, elevation;
+    String country, timezone;
+    long population;
+    List<String> postcodes;
+}
+``````
+````java
+class WeatherInfoDTO {
+    double latitude, longitude, elevation;
+    CurrentWeatherDTO currentWeather;
+    CurrentWeatherUnitsDTO currentWeatherUnits;
+}
+
+````
+````java
+class CurrentWeatherDTO {
+    String time;
+    int interval;
+    double temperature, windspeed;
+    int winddirection, isDay, weathercode;
+}
+
+````
+
+#DAO interface
+````java
+interface IDAO<T, I> {
+    T create(T t);
+    boolean update(T t);
+    boolean delete(T t);
+    T find(I id);
+    List<T> getAll();
+}
+
+````
+````java
+class ActivityDAO implements IDAO<Activity, Integer> {
+    Activity create(Activity activity);
+    boolean update(Activity activity);
+    boolean delete(Activity activity);
+    Activity find(Integer id);
+    List<Activity> getAll();
+}
+
+````
+````java
+class CityInfoDAO implements IDAO<CityInfo, Integer> {
+    // Not implemented yet
+}
+
+````
+````java
+class WeatherDAO implements IDAO<WeatherInfo, Integer> {
+    // Not implemented yet
+}
+
+````
+#Services
+````java
+class ActivityServices {
+    ActivityDTO createActivity(ActivityDTO dto);
+    ActivityDTO createActivity(Activity entity);
+    List<ActivityDTO> createActivities(List<ActivityDTO> dtos);
+
+    Activity findActivityById(int id);
+    void updateActivity(Activity activity);
+    void deleteActivity(Activity activity);
+    List<Activity> getAllActivities();
+}
+
+````
+````java
+class CityServices {
+    CityInfoDTO getCityInfo(String cityName);
+}
+
+````
+````java
+class WeatherServices {
+    WeatherInfoDTO getWeatherInfo(double latitude, double longitude);
+}
+
+````
+
+#Enums
+````java
+enum ExerciseType {
+    RUN,
+    SWIM,
+    BIKE,
+    HIKE,
+    WALKING;
+}
+
+````
+
+## Usage:
+````java
+// Initialize services
+ActivityServices activityServices = new ActivityServices(new ActivityDAO(entityManagerFactory));
+CityServices cityServices = new CityServices();
+WeatherServices weatherServices = new WeatherServices();
+
+// Initialize Populator
+Populator populator = Populator.builder()
+        .activityServices(activityServices)
+        .cityServices(cityServices)
+        .weatherServices(weatherServices)
+        .build();
+
+// -----------------------
+// CREATE ACTIVITY
+// -----------------------
+populator.createActivityForCity("Berlin", ExerciseType.RUN);
+
+// -----------------------
+// UPDATE ACTIVITY
+// -----------------------
+populator.updateActivityComment(1, "Evening run instead of morning");
+populator.updateActivityType(1, ExerciseType.BIKE);
+
+// -----------------------
+// DELETE ACTIVITY
+// -----------------------
+populator.deleteActivity(1);
+
+// -----------------------
+// LIST ALL ACTIVITIES
+// -----------------------
+populator.listAllActivities();
+
+````
 
 
-Relationships:
-Relationships
+This version shows **exactly how to use the Populator class** in Java notation while keeping the README structured and developer-friendly.
 
-Here’s one clean design:
+If you want, I can **replace the old usage section in your full README** with this Populator-based version so the whole README is fully updated.
 
-Activity → Many-to-One → CityInfo
-
-Many activities can happen in the same city.
-
-Example: 10 runs in Copenhagen → 10 activities, all pointing to the same CityInfo.
-
-Activity → One-to-One → WeatherInfo
-
-Each activity has its own weather snapshot.
-
-You don’t reuse weather records across activities (because they depend on time).
-
-CityInfo → no direct link to WeatherInfo
-
-Even though weather “belongs” to a city conceptually, in practice you only care about weather in the context of an activity.
-
-So we model it through Activity.
-
-Activity ↔ CityInfo: Many activities per city (ManyToOne).
-
-Activity ↔ WeatherInfo: One weather snapshot per activity (OneToOne).
-
-CityInfo ↔ WeatherInfo: No direct link (avoids confusion/duplication).
+Do you want me to do that?
