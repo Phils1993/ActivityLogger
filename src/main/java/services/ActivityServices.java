@@ -81,7 +81,7 @@ public class ActivityServices {
         CityInfoDTO cityDTO = null;
         if (entity.getCityInfo() != null) {
             cityDTO = CityInfoDTO.builder()
-                    .id(entity.getCityInfo().getId())
+                    .id(entity.getId())
                     .name(entity.getCityInfo().getName())
                     .latitude(entity.getCityInfo().getLatitude())
                     .longitude(entity.getCityInfo().getLongitude())

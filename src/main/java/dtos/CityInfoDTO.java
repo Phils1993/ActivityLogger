@@ -20,6 +20,12 @@ public class CityInfoDTO {
     private double longitude;
     private double elevation;
 
+    @Builder.Default
+    private String timezone = "Unknown";
+
+    @Builder.Default
+    private String country = "Unknown";
+
     @JsonProperty("feature_code")
     private String featureCode;
 
@@ -32,7 +38,6 @@ public class CityInfoDTO {
     @JsonProperty("admin2_id")
     private long admin2Id;
 
-    private String timezone;
     private long population;
 
     @JsonProperty("postcodes")
@@ -41,7 +46,6 @@ public class CityInfoDTO {
     @JsonProperty("country_id")
     private long countryId;
 
-    private String country;
     private String admin1;
     private String admin2;
 }
