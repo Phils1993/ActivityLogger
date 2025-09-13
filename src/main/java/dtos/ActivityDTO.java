@@ -24,7 +24,4 @@ public class ActivityDTO {
     private WeatherInfoDTO weatherInfoDTO;
     private CityInfoDTO cityInfoDTO;
 
-
-
-
 }

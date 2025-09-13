@@ -1,6 +1,6 @@
 package dtos;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -10,10 +10,27 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherInfoDTO {
-    @JsonProperty("LocationName")
-    private String locationName;
-    @JsonProperty("CurrentData")
-    private CurrentData currentData;
+    private double latitude;
+    private double longitude;
 
+    @JsonProperty("generationtime_ms")
+    private double generationTimeMs;
+
+    @JsonProperty("utc_offset_seconds")
+    private int utcOffsetSeconds;
+
+    private String timezone;
+
+    @JsonProperty("timezone_abbreviation")
+    private String timezoneAbbreviation;
+
+    private double elevation;
+
+    @JsonProperty("current_weather_units")
+    private CurrentWeatherUnitsDTO currentWeatherUnits;
+
+    @JsonProperty("current_weather")
+    private CurrentWeatherDTO currentWeather;
 }

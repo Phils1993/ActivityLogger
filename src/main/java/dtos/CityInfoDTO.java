@@ -1,6 +1,5 @@
 package dtos;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -15,14 +14,34 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CityInfoDTO {
-    private String id;
-    @JsonProperty("primærtnavn")
-    private String primaryName;
-    @JsonProperty("visueltcenter")
-    private List<Double> visueltCenter;
-    @JsonProperty("kommuner")
-    private List<KommuneDTO> kommuner;
+    private long id;
+    private String name;
+    private double latitude;
+    private double longitude;
+    private double elevation;
 
+    private String timezone;
+    private long population;
+    private List<String> postcodes;
 
+    /* no need @JsonProperty("feature_code")
 
+    private String featureCode;
+
+    @JsonProperty("country_code")
+    private String countryCode;
+
+    @JsonProperty("admin1_id")
+    private long admin1Id;
+
+    @JsonProperty("admin2_id")
+    private long admin2Id;
+    @JsonProperty("country_id")
+    private long countryId;
+
+    private String country;
+    private String admin1;
+    private String admin2;
+
+     */
 }
