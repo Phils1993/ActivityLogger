@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ActivityDAO implements IDAO <Activity, Integer>{
     private final EntityManagerFactory emf;
+
     public ActivityDAO(EntityManagerFactory emf) {
         this.emf = emf;
     }
