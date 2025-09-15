@@ -127,6 +127,22 @@
             <version>${org.slf4j}</version>
         </dependency>
 
+        <!-- Testcontainers JDBC support -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>jdbc</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Optional: If you use PostgreSQL in your tests -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 </project>
