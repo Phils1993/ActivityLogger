@@ -204,9 +204,3 @@ populator.listAllActivities();
 
 ````
 
-
-This version shows **exactly how to use the Populator class** in Java notation while keeping the README structured and developer-friendly.
-
-If you want, I can **replace the old usage section in your full README** with this Populator-based version so the whole README is fully updated.
-
-Do you want me to do that?
