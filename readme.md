@@ -217,33 +217,27 @@ Populator populator = Populator.builder()
 // -----------------------
 // CREATE ACTIVITY
 // -----------------------
-populator.
+class Populator {
+    class populator.createActivityForCity("Berlin",ExerciseType.RUN);
 
-createActivityForCity("Berlin",ExerciseType.RUN);
-
-// -----------------------
+    // -----------------------
 // UPDATE ACTIVITY
 // -----------------------
-populator.
+    class populator.
 
-updateActivityComment(1,"Evening run instead of morning");
-populator.
+    updateActivityComment(1,"Evening run instead of morning");
 
-updateActivityType(1,ExerciseType.BIKE);
+    updateActivityType(1,ExerciseType.BIKE);
 
-// -----------------------
+    // -----------------------
 // DELETE ACTIVITY
 // -----------------------
-populator.
+    deleteActivity(1);
 
-deleteActivity(1);
-
-// -----------------------
+    // -----------------------
 // LIST ALL ACTIVITIES
 // -----------------------
-populator.
+    class populator.listAllActivities();
 
-listAllActivities();
-
+}
 ``````
-
