@@ -1,6 +1,8 @@
 # Activity Tracker Application
 
-A Java application to track physical activities along with city and weather information.
+Friday Task 12 sep. 
+https://3semfall2025.kursusmaterialer.dk/backend/java-deepdive-2/exercises/activity-logger-part2/
+
 
 ---
 
