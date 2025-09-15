@@ -1,6 +1,6 @@
 # Activity Tracker Application
 
-Friday Task 12 sep. 
+Friday Task 12 sep.
 https://3semfall2025.kursusmaterialer.dk/backend/java-deepdive-2/exercises/activity-logger-part2/
 
 
@@ -17,20 +17,23 @@ package services;   // Business Logic / Service Layer
 ```
 
 #Entities
+
 ````java
+
 @Entity
 class Activity {
-int id;
-LocalDate executionDate;
-ExerciseType exerciseType;
-LocalTime timeOfDay;
-int duration;
-double distance;
-String comment;
-CityInfo cityInfo;        // Many-to-One
-WeatherInfo weatherInfo;  // One-to-One
+    int id;
+    LocalDate executionDate;
+    ExerciseType exerciseType;
+    LocalTime timeOfDay;
+    int duration;
+    double distance;
+    String comment;
+    CityInfo cityInfo;        // Many-to-One
+    WeatherInfo weatherInfo;  // One-to-One
 }
 `````
+
 ``` java
 @Entity
 class CityInfo {
@@ -43,7 +46,9 @@ class CityInfo {
     Set<Activity> activities; // One-to-Many
 }
 ````
+
 `````java
+
 @Entity
 class WeatherInfo {
     int id;
@@ -54,7 +59,9 @@ class WeatherInfo {
 }
 
 ``````
+
 # DTO (data transfer object)
+
 ````java
 class ActivityDTO {
     LocalDate executionDate;
@@ -67,6 +74,7 @@ class ActivityDTO {
     WeatherInfoDTO weatherInfoDTO;
 }
 ````
+
 `````java
 class CityInfoDTO {
     int id;
@@ -77,6 +85,7 @@ class CityInfoDTO {
     List<String> postcodes;
 }
 ``````
+
 ````java
 class WeatherInfoDTO {
     double latitude, longitude, elevation;
@@ -85,6 +94,7 @@ class WeatherInfoDTO {
 }
 
 ````
+
 ````java
 class CurrentWeatherDTO {
     String time;
@@ -96,58 +106,79 @@ class CurrentWeatherDTO {
 ````
 
 #DAO interface
+
 ````java
 interface IDAO<T, I> {
     T create(T t);
+
     boolean update(T t);
+
     boolean delete(T t);
+
     T find(I id);
+
     List<T> getAll();
 }
 
 ````
+
 ````java
 class ActivityDAO implements IDAO<Activity, Integer> {
     Activity create(Activity activity);
+
     boolean update(Activity activity);
+
     boolean delete(Activity activity);
+
     Activity find(Integer id);
+
     List<Activity> getAll();
 }
 
 ````
+
 ````java
 class CityInfoDAO implements IDAO<CityInfo, Integer> {
     // Not implemented yet
 }
 
 ````
+
 ````java
 class WeatherDAO implements IDAO<WeatherInfo, Integer> {
     // Not implemented yet
 }
 
 ````
+
 #Services
+
 ````java
 class ActivityServices {
     ActivityDTO createActivity(ActivityDTO dto);
+
     ActivityDTO createActivity(Activity entity);
+
     List<ActivityDTO> createActivities(List<ActivityDTO> dtos);
 
     Activity findActivityById(int id);
+
     void updateActivity(Activity activity);
+
     void deleteActivity(Activity activity);
+
     List<Activity> getAllActivities();
 }
 
 ````
+
 ````java
 class CityServices {
     CityInfoDTO getCityInfo(String cityName);
 }
 
 ````
+
 ````java
 class WeatherServices {
     WeatherInfoDTO getWeatherInfo(double latitude, double longitude);
@@ -156,6 +187,7 @@ class WeatherServices {
 ````
 
 #Enums
+
 ````java
 enum ExerciseType {
     RUN,
@@ -168,6 +200,7 @@ enum ExerciseType {
 ````
 
 ## Usage:
+
 ````java
 // Initialize services
 ActivityServices activityServices = new ActivityServices(new ActivityDAO(entityManagerFactory));
@@ -184,23 +217,33 @@ Populator populator = Populator.builder()
 // -----------------------
 // CREATE ACTIVITY
 // -----------------------
-populator.createActivityForCity("Berlin", ExerciseType.RUN);
+populator.
+
+createActivityForCity("Berlin",ExerciseType.RUN);
 
 // -----------------------
 // UPDATE ACTIVITY
 // -----------------------
-populator.updateActivityComment(1, "Evening run instead of morning");
-populator.updateActivityType(1, ExerciseType.BIKE);
+populator.
+
+updateActivityComment(1,"Evening run instead of morning");
+populator.
+
+updateActivityType(1,ExerciseType.BIKE);
 
 // -----------------------
 // DELETE ACTIVITY
 // -----------------------
-populator.deleteActivity(1);
+populator.
+
+deleteActivity(1);
 
 // -----------------------
 // LIST ALL ACTIVITIES
 // -----------------------
-populator.listAllActivities();
+populator.
 
-````
+listAllActivities();
+
+``````
 
